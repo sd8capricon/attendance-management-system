@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@0.18.2/dist/web3.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div style="display: flex; align-items: center;">
+            <h1>Attendance Management using Smart Contract</h1>
+            <a class="btn" href="admin.html">Admin Panel</a>
+        </div>
+        &nbsp;&nbsp;
+        <fieldset>
+            <legend>Students</legend>
+            <h2 id="Students"></h2>
+            <table id="student-table" border="2">
+                <tr>
+                    <th>Roll No</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Status</th>
+                </tr>
+            </table>
+            <button id="button" onclick="handleAttendance()">Mark Attendance</button>
+
+        </fieldset>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+        const studentTable = $('#student-table');
+        const students = [];
+    </script>
+    <script src="js/index.js"></script>
+    <script src="js/web3Vars.js"></script>
+
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+
+            web3.eth.defaultAccount = web3.eth.accounts[0];
+
+            // var attendanceContract = web3.eth.contract([{ "constant": false, "inputs": [{ "name": "_studId", "type": "uint256" }, { "name": "_age", "type": "uint256" }, { "name": "_fName", "type": "string" }, { "name": "_lName", "type": "string" }], "name": "createStudent", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_studId", "type": "uint256" }], "name": "decrementAttendance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "_studId", "type": "uint256" }], "name": "incrementAttendance", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "fName", "type": "string" }, { "indexed": false, "name": "lName", "type": "string" }, { "indexed": false, "name": "age", "type": "uint256" }], "name": "studentCreationEvent", "type": "event" }, { "constant": true, "inputs": [], "name": "countStudents", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "_studId", "type": "uint256" }], "name": "getParticularStudent", "outputs": [{ "name": "", "type": "string" }, { "name": "", "type": "string" }, { "name": "", "type": "uint256" }, { "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getStudents", "outputs": [{ "name": "", "type": "uint256[]" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "uint256" }], "name": "studIdList", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }]);
+            var attendanceContract = web3.eth.contract(contractABI);
+
+            var AttendanceManagement = attendanceContract.at(contractAddress);
+            console.log(AttendanceManagement);
+
+            buildTable();
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,2553 @@
+{
+  "contractName": "Owned",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/attendance.sol\":\"Owned\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/attendance.sol\":{\"keccak256\":\"0xd0b5c910bce1b310e8bba81ce935bd6151a4dcb4619d85c6590a08a20911f346\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d179edba05c33f36dcd69e1aebd10152e9a3e51166949378b7afd3185c9e79bd\",\"dweb:/ipfs/QmdMygTbV8SxtY3XwJyXHriGWYPoEoVoPra1uxsTMVak8m\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550603f80605d6000396000f3fe6080604052600080fdfea2646970667358221220e3dac0917a010e42848c4ffe5a9c078361f621ebcd172cf53e3c63b7a6f380f264736f6c63430008000033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220e3dac0917a010e42848c4ffe5a9c078361f621ebcd172cf53e3c63b7a6f380f264736f6c63430008000033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "66:216:0:-:0;;;107:49;;;;;;;;;;139:10;131:5;;:18;;;;;;;;;;;;;;;;;;66:216;;;;;;",
+  "deployedSourceMap": "66:216:0:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.4.22 <0.9.0;\n\ncontract Owned {\n    address owner;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Only the owner can call this function\");\n        _;\n    }\n}\n\ncontract AttendanceSheet is Owned {\n    struct Student {\n        uint age;\n        string fName;\n        string lName;\n        uint attendanceValue;\n    }\n\n    mapping(uint => Student) studentList;\n    uint[] public studIdList;\n\n    event StudentCreationEvent(string fName, string lName, uint age);\n\n    function createStudent(\n        uint _studId,\n        uint _age,\n        string memory _fName,\n        string memory _lName\n    ) public onlyOwner {\n        Student storage student = studentList[_studId];\n        student.age = _age;\n        student.fName = _fName;\n        student.lName = _lName;\n        student.attendanceValue = 0;\n        studIdList.push(_studId);\n        emit StudentCreationEvent(_fName, _lName, _age);\n    }\n\n    function incrementAttendance(uint _studId) public onlyOwner {\n        studentList[_studId].attendanceValue =\n            studentList[_studId].attendanceValue +\n            1;\n    }\n\n    function incrementAttendanceBulk(uint[] memory _studIds) public onlyOwner {\n        for (uint256 index = 0; index < _studIds.length; index++) {\n            uint _studId = _studIds[index];\n            studentList[_studId].attendanceValue =\n                studentList[_studId].attendanceValue +\n                1;\n        }\n    }\n\n    function getStudents() public view returns (uint[] memory) {\n        return studIdList;\n    }\n\n    function getParticularStudent(\n        uint _studId\n    ) public view returns (string memory, string memory, uint, uint) {\n        Student memory student = studentList[_studId];\n        return (\n            student.fName,\n            student.lName,\n            student.age,\n            student.attendanceValue\n        );\n    }\n\n    function countStudents() public view returns (uint) {\n        return studIdList.length;\n    }\n}\n",
+  "sourcePath": "D:\\Siddharth\\DBIT\\Files\\BE\\BC\\Project\\attendance_management_blockchain-main\\contracts\\attendance.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/attendance.sol",
+    "exportedSymbols": {
+      "AttendanceSheet": [
+        219
+      ],
+      "Owned": [
+        25
+      ]
+    },
+    "id": 220,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.4",
+          ".22",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:32:0"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 25,
+        "linearizedBaseContracts": [
+          25
+        ],
+        "name": "Owned",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 3,
+            "mutability": "mutable",
+            "name": "owner",
+            "nodeType": "VariableDeclaration",
+            "scope": 25,
+            "src": "87:13:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 2,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "87:7:0",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 11,
+              "nodeType": "Block",
+              "src": "121:35:0",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 9,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "id": 6,
+                      "name": "owner",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 3,
+                      "src": "131:5:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "expression": {
+                        "id": 7,
+                        "name": "msg",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 4294967281,
+                        "src": "139:3:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_magic_message",
+                          "typeString": "msg"
+                        }
+                      },
+                      "id": 8,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "sender",
+                      "nodeType": "MemberAccess",
+                      "src": "139:10:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "131:18:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 10,
+                  "nodeType": "ExpressionStatement",
+                  "src": "131:18:0"
+                }
+              ]
+            },
+            "id": 12,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "118:2:0"
+            },
+            "returnParameters": {
+              "id": 5,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "121:0:0"
+            },
+            "scope": 25,
+            "src": "107:49:0",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 23,
+              "nodeType": "Block",
+              "src": "183:97:0",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "commonType": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        "id": 18,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "expression": {
+                            "id": 15,
+                            "name": "msg",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 4294967281,
+                            "src": "201:3:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_magic_message",
+                              "typeString": "msg"
+                            }
+                          },
+                          "id": 16,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "sender",
+                          "nodeType": "MemberAccess",
+                          "src": "201:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "==",
+                        "rightExpression": {
+                          "id": 17,
+                          "name": "owner",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3,
+                          "src": "215:5:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        },
+                        "src": "201:19:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "hexValue": "4f6e6c7920746865206f776e65722063616e2063616c6c20746869732066756e6374696f6e",
+                        "id": 19,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "222:39:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_02c4ea565ba5dd10ca7507fa4aece08fe60d2b6b945dff193cdbce1647b7face",
+                          "typeString": "literal_string \"Only the owner can call this function\""
+                        },
+                        "value": "Only the owner can call this function"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_02c4ea565ba5dd10ca7507fa4aece08fe60d2b6b945dff193cdbce1647b7face",
+                          "typeString": "literal_string \"Only the owner can call this function\""
+                        }
+                      ],
+                      "id": 14,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
+                      "referencedDeclaration": 4294967278,
+                      "src": "193:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 20,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "193:69:0",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 21,
+                  "nodeType": "ExpressionStatement",
+                  "src": "193:69:0"
+                },
+                {
+                  "id": 22,
+                  "nodeType": "PlaceholderStatement",
+                  "src": "272:1:0"
+                }
+              ]
+            },
+            "id": 24,
+            "name": "onlyOwner",
+            "nodeType": "ModifierDefinition",
+            "parameters": {
+              "id": 13,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "180:2:0"
+            },
+            "src": "162:118:0",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "scope": 220,
+        "src": "66:216:0"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 26,
+              "name": "Owned",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 25,
+              "src": "312:5:0"
+            },
+            "id": 27,
+            "nodeType": "InheritanceSpecifier",
+            "src": "312:5:0"
+          }
+        ],
+        "contractDependencies": [
+          25
+        ],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 219,
+        "linearizedBaseContracts": [
+          219,
+          25
+        ],
+        "name": "AttendanceSheet",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "AttendanceSheet.Student",
+            "id": 36,
+            "members": [
+              {
+                "constant": false,
+                "id": 29,
+                "mutability": "mutable",
+                "name": "age",
+                "nodeType": "VariableDeclaration",
+                "scope": 36,
+                "src": "349:8:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 28,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "349:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 31,
+                "mutability": "mutable",
+                "name": "fName",
+                "nodeType": "VariableDeclaration",
+                "scope": 36,
+                "src": "367:12:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 30,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "367:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 33,
+                "mutability": "mutable",
+                "name": "lName",
+                "nodeType": "VariableDeclaration",
+                "scope": 36,
+                "src": "389:12:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 32,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "389:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 35,
+                "mutability": "mutable",
+                "name": "attendanceValue",
+                "nodeType": "VariableDeclaration",
+                "scope": 36,
+                "src": "411:20:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 34,
+                  "name": "uint",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "411:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Student",
+            "nodeType": "StructDefinition",
+            "scope": 219,
+            "src": "324:114:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 41,
+            "mutability": "mutable",
+            "name": "studentList",
+            "nodeType": "VariableDeclaration",
+            "scope": 219,
+            "src": "444:36:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+              "typeString": "mapping(uint256 => struct AttendanceSheet.Student)"
+            },
+            "typeName": {
+              "id": 40,
+              "keyType": {
+                "id": 37,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "452:4:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "444:24:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                "typeString": "mapping(uint256 => struct AttendanceSheet.Student)"
+              },
+              "valueType": {
+                "id": 39,
+                "nodeType": "UserDefinedTypeName",
+                "pathNode": {
+                  "id": 38,
+                  "name": "Student",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 36,
+                  "src": "460:7:0"
+                },
+                "referencedDeclaration": 36,
+                "src": "460:7:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                  "typeString": "struct AttendanceSheet.Student"
+                }
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "functionSelector": "273ce3d9",
+            "id": 44,
+            "mutability": "mutable",
+            "name": "studIdList",
+            "nodeType": "VariableDeclaration",
+            "scope": 219,
+            "src": "486:24:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+              "typeString": "uint256[]"
+            },
+            "typeName": {
+              "baseType": {
+                "id": 42,
+                "name": "uint",
+                "nodeType": "ElementaryTypeName",
+                "src": "486:4:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "id": 43,
+              "nodeType": "ArrayTypeName",
+              "src": "486:6:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                "typeString": "uint256[]"
+              }
+            },
+            "visibility": "public"
+          },
+          {
+            "anonymous": false,
+            "id": 52,
+            "name": "StudentCreationEvent",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 51,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 46,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "fName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "544:12:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 45,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "544:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "lName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "558:12:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 47,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "558:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 50,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "age",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 52,
+                  "src": "572:8:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 49,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "572:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "543:38:0"
+            },
+            "src": "517:65:0"
+          },
+          {
+            "body": {
+              "id": 108,
+              "nodeType": "Block",
+              "src": "735:283:0",
+              "statements": [
+                {
+                  "assignments": [
+                    67
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 67,
+                      "mutability": "mutable",
+                      "name": "student",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 108,
+                      "src": "745:23:0",
+                      "stateVariable": false,
+                      "storageLocation": "storage",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                        "typeString": "struct AttendanceSheet.Student"
+                      },
+                      "typeName": {
+                        "id": 66,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 65,
+                          "name": "Student",
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 36,
+                          "src": "745:7:0"
+                        },
+                        "referencedDeclaration": 36,
+                        "src": "745:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 71,
+                  "initialValue": {
+                    "baseExpression": {
+                      "id": 68,
+                      "name": "studentList",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 41,
+                      "src": "771:11:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                        "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                      }
+                    },
+                    "id": 70,
+                    "indexExpression": {
+                      "id": 69,
+                      "name": "_studId",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 54,
+                      "src": "783:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "771:20:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Student_$36_storage",
+                      "typeString": "struct AttendanceSheet.Student storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "745:46:0"
+                },
+                {
+                  "expression": {
+                    "id": 76,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 72,
+                        "name": "student",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 67,
+                        "src": "801:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student storage pointer"
+                        }
+                      },
+                      "id": 74,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "age",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 29,
+                      "src": "801:11:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 75,
+                      "name": "_age",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 56,
+                      "src": "815:4:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "801:18:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 77,
+                  "nodeType": "ExpressionStatement",
+                  "src": "801:18:0"
+                },
+                {
+                  "expression": {
+                    "id": 82,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 78,
+                        "name": "student",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 67,
+                        "src": "829:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student storage pointer"
+                        }
+                      },
+                      "id": 80,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "fName",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 31,
+                      "src": "829:13:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 81,
+                      "name": "_fName",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 58,
+                      "src": "845:6:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "829:22:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 83,
+                  "nodeType": "ExpressionStatement",
+                  "src": "829:22:0"
+                },
+                {
+                  "expression": {
+                    "id": 88,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 84,
+                        "name": "student",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 67,
+                        "src": "861:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student storage pointer"
+                        }
+                      },
+                      "id": 86,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "lName",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 33,
+                      "src": "861:13:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage",
+                        "typeString": "string storage ref"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 87,
+                      "name": "_lName",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 60,
+                      "src": "877:6:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_memory_ptr",
+                        "typeString": "string memory"
+                      }
+                    },
+                    "src": "861:22:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage",
+                      "typeString": "string storage ref"
+                    }
+                  },
+                  "id": 89,
+                  "nodeType": "ExpressionStatement",
+                  "src": "861:22:0"
+                },
+                {
+                  "expression": {
+                    "id": 94,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "id": 90,
+                        "name": "student",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 67,
+                        "src": "893:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student storage pointer"
+                        }
+                      },
+                      "id": 92,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "attendanceValue",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 35,
+                      "src": "893:23:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "hexValue": "30",
+                      "id": 93,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "919:1:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "src": "893:27:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 95,
+                  "nodeType": "ExpressionStatement",
+                  "src": "893:27:0"
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "id": 99,
+                        "name": "_studId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 54,
+                        "src": "946:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "id": 96,
+                        "name": "studIdList",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 44,
+                        "src": "930:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+                          "typeString": "uint256[] storage ref"
+                        }
+                      },
+                      "id": 98,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "push",
+                      "nodeType": "MemberAccess",
+                      "src": "930:15:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_arraypush_nonpayable$_t_uint256_$returns$__$",
+                        "typeString": "function (uint256)"
+                      }
+                    },
+                    "id": 100,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "930:24:0",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 101,
+                  "nodeType": "ExpressionStatement",
+                  "src": "930:24:0"
+                },
+                {
+                  "eventCall": {
+                    "arguments": [
+                      {
+                        "id": 103,
+                        "name": "_fName",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 58,
+                        "src": "990:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "id": 104,
+                        "name": "_lName",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 60,
+                        "src": "998:6:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "id": 105,
+                        "name": "_age",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 56,
+                        "src": "1006:4:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "id": 102,
+                      "name": "StudentCreationEvent",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 52,
+                      "src": "969:20:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_event_nonpayable$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_uint256_$returns$__$",
+                        "typeString": "function (string memory,string memory,uint256)"
+                      }
+                    },
+                    "id": 106,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "969:42:0",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 107,
+                  "nodeType": "EmitStatement",
+                  "src": "964:47:0"
+                }
+              ]
+            },
+            "functionSelector": "cb0c7c0c",
+            "id": 109,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 63,
+                "modifierName": {
+                  "id": 62,
+                  "name": "onlyOwner",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 24,
+                  "src": "725:9:0"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "725:9:0"
+              }
+            ],
+            "name": "createStudent",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 61,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54,
+                  "mutability": "mutable",
+                  "name": "_studId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109,
+                  "src": "620:12:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 53,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "620:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 56,
+                  "mutability": "mutable",
+                  "name": "_age",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109,
+                  "src": "642:9:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "642:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 58,
+                  "mutability": "mutable",
+                  "name": "_fName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109,
+                  "src": "661:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 57,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "661:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 60,
+                  "mutability": "mutable",
+                  "name": "_lName",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 109,
+                  "src": "691:20:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 59,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "691:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "610:107:0"
+            },
+            "returnParameters": {
+              "id": 64,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "735:0:0"
+            },
+            "scope": 219,
+            "src": "588:430:0",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 128,
+              "nodeType": "Block",
+              "src": "1084:120:0",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 126,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "expression": {
+                        "baseExpression": {
+                          "id": 116,
+                          "name": "studentList",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 41,
+                          "src": "1094:11:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                            "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                          }
+                        },
+                        "id": 118,
+                        "indexExpression": {
+                          "id": 117,
+                          "name": "_studId",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 111,
+                          "src": "1106:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "1094:20:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage",
+                          "typeString": "struct AttendanceSheet.Student storage ref"
+                        }
+                      },
+                      "id": 119,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "memberName": "attendanceValue",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 35,
+                      "src": "1094:36:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 125,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "expression": {
+                          "baseExpression": {
+                            "id": 120,
+                            "name": "studentList",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 41,
+                            "src": "1145:11:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                              "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                            }
+                          },
+                          "id": 122,
+                          "indexExpression": {
+                            "id": 121,
+                            "name": "_studId",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 111,
+                            "src": "1157:7:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1145:20:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Student_$36_storage",
+                            "typeString": "struct AttendanceSheet.Student storage ref"
+                          }
+                        },
+                        "id": 123,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "attendanceValue",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 35,
+                        "src": "1145:36:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "+",
+                      "rightExpression": {
+                        "hexValue": "31",
+                        "id": 124,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "number",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "1196:1:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_rational_1_by_1",
+                          "typeString": "int_const 1"
+                        },
+                        "value": "1"
+                      },
+                      "src": "1145:52:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1094:103:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 127,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1094:103:0"
+                }
+              ]
+            },
+            "functionSelector": "f74342da",
+            "id": 129,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 114,
+                "modifierName": {
+                  "id": 113,
+                  "name": "onlyOwner",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 24,
+                  "src": "1074:9:0"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1074:9:0"
+              }
+            ],
+            "name": "incrementAttendance",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 112,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 111,
+                  "mutability": "mutable",
+                  "name": "_studId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 129,
+                  "src": "1053:12:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 110,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1053:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1052:14:0"
+            },
+            "returnParameters": {
+              "id": 115,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1084:0:0"
+            },
+            "scope": 219,
+            "src": "1024:180:0",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 168,
+              "nodeType": "Block",
+              "src": "1284:254:0",
+              "statements": [
+                {
+                  "body": {
+                    "id": 166,
+                    "nodeType": "Block",
+                    "src": "1352:180:0",
+                    "statements": [
+                      {
+                        "assignments": [
+                          149
+                        ],
+                        "declarations": [
+                          {
+                            "constant": false,
+                            "id": 149,
+                            "mutability": "mutable",
+                            "name": "_studId",
+                            "nodeType": "VariableDeclaration",
+                            "scope": 166,
+                            "src": "1366:12:0",
+                            "stateVariable": false,
+                            "storageLocation": "default",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            },
+                            "typeName": {
+                              "id": 148,
+                              "name": "uint",
+                              "nodeType": "ElementaryTypeName",
+                              "src": "1366:4:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "visibility": "internal"
+                          }
+                        ],
+                        "id": 153,
+                        "initialValue": {
+                          "baseExpression": {
+                            "id": 150,
+                            "name": "_studIds",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 132,
+                            "src": "1381:8:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                              "typeString": "uint256[] memory"
+                            }
+                          },
+                          "id": 152,
+                          "indexExpression": {
+                            "id": 151,
+                            "name": "index",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 138,
+                            "src": "1390:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "1381:15:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "VariableDeclarationStatement",
+                        "src": "1366:30:0"
+                      },
+                      {
+                        "expression": {
+                          "id": 164,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftHandSide": {
+                            "expression": {
+                              "baseExpression": {
+                                "id": 154,
+                                "name": "studentList",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 41,
+                                "src": "1410:11:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                                  "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                                }
+                              },
+                              "id": 156,
+                              "indexExpression": {
+                                "id": 155,
+                                "name": "_studId",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 149,
+                                "src": "1422:7:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              },
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "nodeType": "IndexAccess",
+                              "src": "1410:20:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_struct$_Student_$36_storage",
+                                "typeString": "struct AttendanceSheet.Student storage ref"
+                              }
+                            },
+                            "id": 157,
+                            "isConstant": false,
+                            "isLValue": true,
+                            "isPure": false,
+                            "lValueRequested": true,
+                            "memberName": "attendanceValue",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 35,
+                            "src": "1410:36:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "nodeType": "Assignment",
+                          "operator": "=",
+                          "rightHandSide": {
+                            "commonType": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            },
+                            "id": 163,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "leftExpression": {
+                              "expression": {
+                                "baseExpression": {
+                                  "id": 158,
+                                  "name": "studentList",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 41,
+                                  "src": "1465:11:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                                    "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                                  }
+                                },
+                                "id": 160,
+                                "indexExpression": {
+                                  "id": 159,
+                                  "name": "_studId",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 149,
+                                  "src": "1477:7:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_uint256",
+                                    "typeString": "uint256"
+                                  }
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1465:20:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_struct$_Student_$36_storage",
+                                  "typeString": "struct AttendanceSheet.Student storage ref"
+                                }
+                              },
+                              "id": 161,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberName": "attendanceValue",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": 35,
+                              "src": "1465:36:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "nodeType": "BinaryOperation",
+                            "operator": "+",
+                            "rightExpression": {
+                              "hexValue": "31",
+                              "id": 162,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "1520:1:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_1_by_1",
+                                "typeString": "int_const 1"
+                              },
+                              "value": "1"
+                            },
+                            "src": "1465:56:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "src": "1410:111:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 165,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1410:111:0"
+                      }
+                    ]
+                  },
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 144,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "id": 141,
+                      "name": "index",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 138,
+                      "src": "1318:5:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "<",
+                    "rightExpression": {
+                      "expression": {
+                        "id": 142,
+                        "name": "_studIds",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 132,
+                        "src": "1326:8:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                          "typeString": "uint256[] memory"
+                        }
+                      },
+                      "id": 143,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "src": "1326:15:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "1318:23:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 167,
+                  "initializationExpression": {
+                    "assignments": [
+                      138
+                    ],
+                    "declarations": [
+                      {
+                        "constant": false,
+                        "id": 138,
+                        "mutability": "mutable",
+                        "name": "index",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 167,
+                        "src": "1299:13:0",
+                        "stateVariable": false,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "typeName": {
+                          "id": 137,
+                          "name": "uint256",
+                          "nodeType": "ElementaryTypeName",
+                          "src": "1299:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "visibility": "internal"
+                      }
+                    ],
+                    "id": 140,
+                    "initialValue": {
+                      "hexValue": "30",
+                      "id": 139,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1315:1:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_0_by_1",
+                        "typeString": "int_const 0"
+                      },
+                      "value": "0"
+                    },
+                    "nodeType": "VariableDeclarationStatement",
+                    "src": "1299:17:0"
+                  },
+                  "loopExpression": {
+                    "expression": {
+                      "id": 146,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "nodeType": "UnaryOperation",
+                      "operator": "++",
+                      "prefix": false,
+                      "src": "1343:7:0",
+                      "subExpression": {
+                        "id": 145,
+                        "name": "index",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 138,
+                        "src": "1343:5:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 147,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1343:7:0"
+                  },
+                  "nodeType": "ForStatement",
+                  "src": "1294:238:0"
+                }
+              ]
+            },
+            "functionSelector": "99251dc8",
+            "id": 169,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 135,
+                "modifierName": {
+                  "id": 134,
+                  "name": "onlyOwner",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 24,
+                  "src": "1274:9:0"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "1274:9:0"
+              }
+            ],
+            "name": "incrementAttendanceBulk",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 133,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 132,
+                  "mutability": "mutable",
+                  "name": "_studIds",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 169,
+                  "src": "1243:22:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 130,
+                      "name": "uint",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1243:4:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 131,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1243:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1242:24:0"
+            },
+            "returnParameters": {
+              "id": 136,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1284:0:0"
+            },
+            "scope": 219,
+            "src": "1210:328:0",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 177,
+              "nodeType": "Block",
+              "src": "1603:34:0",
+              "statements": [
+                {
+                  "expression": {
+                    "id": 175,
+                    "name": "studIdList",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 44,
+                    "src": "1620:10:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+                      "typeString": "uint256[] storage ref"
+                    }
+                  },
+                  "functionReturnParameters": 174,
+                  "id": 176,
+                  "nodeType": "Return",
+                  "src": "1613:17:0"
+                }
+              ]
+            },
+            "functionSelector": "f1d064b3",
+            "id": 178,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getStudents",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 170,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1564:2:0"
+            },
+            "returnParameters": {
+              "id": 174,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 173,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 178,
+                  "src": "1588:13:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 171,
+                      "name": "uint",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1588:4:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 172,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1588:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1587:15:0"
+            },
+            "scope": 219,
+            "src": "1544:93:0",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 208,
+              "nodeType": "Block",
+              "src": "1764:205:0",
+              "statements": [
+                {
+                  "assignments": [
+                    193
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 193,
+                      "mutability": "mutable",
+                      "name": "student",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 208,
+                      "src": "1774:22:0",
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_Student_$36_memory_ptr",
+                        "typeString": "struct AttendanceSheet.Student"
+                      },
+                      "typeName": {
+                        "id": 192,
+                        "nodeType": "UserDefinedTypeName",
+                        "pathNode": {
+                          "id": 191,
+                          "name": "Student",
+                          "nodeType": "IdentifierPath",
+                          "referencedDeclaration": 36,
+                          "src": "1774:7:0"
+                        },
+                        "referencedDeclaration": 36,
+                        "src": "1774:7:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Student_$36_storage_ptr",
+                          "typeString": "struct AttendanceSheet.Student"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 197,
+                  "initialValue": {
+                    "baseExpression": {
+                      "id": 194,
+                      "name": "studentList",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 41,
+                      "src": "1799:11:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Student_$36_storage_$",
+                        "typeString": "mapping(uint256 => struct AttendanceSheet.Student storage ref)"
+                      }
+                    },
+                    "id": 196,
+                    "indexExpression": {
+                      "id": 195,
+                      "name": "_studId",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 180,
+                      "src": "1811:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "IndexAccess",
+                    "src": "1799:20:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_Student_$36_storage",
+                      "typeString": "struct AttendanceSheet.Student storage ref"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "1774:45:0"
+                },
+                {
+                  "expression": {
+                    "components": [
+                      {
+                        "expression": {
+                          "id": 198,
+                          "name": "student",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 193,
+                          "src": "1850:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Student_$36_memory_ptr",
+                            "typeString": "struct AttendanceSheet.Student memory"
+                          }
+                        },
+                        "id": 199,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "fName",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 31,
+                        "src": "1850:13:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "expression": {
+                          "id": 200,
+                          "name": "student",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 193,
+                          "src": "1877:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Student_$36_memory_ptr",
+                            "typeString": "struct AttendanceSheet.Student memory"
+                          }
+                        },
+                        "id": 201,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "lName",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 33,
+                        "src": "1877:13:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_memory_ptr",
+                          "typeString": "string memory"
+                        }
+                      },
+                      {
+                        "expression": {
+                          "id": 202,
+                          "name": "student",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 193,
+                          "src": "1904:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Student_$36_memory_ptr",
+                            "typeString": "struct AttendanceSheet.Student memory"
+                          }
+                        },
+                        "id": 203,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "age",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 29,
+                        "src": "1904:11:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "expression": {
+                          "id": 204,
+                          "name": "student",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 193,
+                          "src": "1929:7:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Student_$36_memory_ptr",
+                            "typeString": "struct AttendanceSheet.Student memory"
+                          }
+                        },
+                        "id": 205,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "attendanceValue",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 35,
+                        "src": "1929:23:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "id": 206,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "1836:126:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_uint256_$_t_uint256_$",
+                      "typeString": "tuple(string memory,string memory,uint256,uint256)"
+                    }
+                  },
+                  "functionReturnParameters": 190,
+                  "id": 207,
+                  "nodeType": "Return",
+                  "src": "1829:133:0"
+                }
+              ]
+            },
+            "functionSelector": "ab9ba24f",
+            "id": 209,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getParticularStudent",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 181,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 180,
+                  "mutability": "mutable",
+                  "name": "_studId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 209,
+                  "src": "1682:12:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 179,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1682:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1672:28:0"
+            },
+            "returnParameters": {
+              "id": 190,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 183,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 209,
+                  "src": "1722:13:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 182,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1722:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 185,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 209,
+                  "src": "1737:13:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 184,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1737:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 187,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 209,
+                  "src": "1752:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 186,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1752:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 189,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 209,
+                  "src": "1758:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 188,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1758:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1721:42:0"
+            },
+            "scope": 219,
+            "src": "1643:326:0",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 217,
+              "nodeType": "Block",
+              "src": "2027:41:0",
+              "statements": [
+                {
+                  "expression": {
+                    "expression": {
+                      "id": 214,
+                      "name": "studIdList",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 44,
+                      "src": "2044:10:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
+                        "typeString": "uint256[] storage ref"
+                      }
+                    },
+                    "id": 215,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "length",
+                    "nodeType": "MemberAccess",
+                    "src": "2044:17:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 213,
+                  "id": 216,
+                  "nodeType": "Return",
+                  "src": "2037:24:0"
+                }
+              ]
+            },
+            "functionSelector": "477f5a69",
+            "id": 218,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "countStudents",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 210,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1997:2:0"
+            },
+            "returnParameters": {
+              "id": 213,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 212,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 218,
+                  "src": "2021:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 211,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2021:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2020:6:0"
+            },
+            "scope": 219,
+            "src": "1975:93:0",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 220,
+        "src": "284:1786:0"
+      }
+    ],
+    "src": "32:2039:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x24FA6411BBf5A7A95De59F65ac50021497484c69",
+      "transactionHash": "0x2037b71d41458513424f67ccd471597ecb658435f68d63004e58530327d1b1d8"
+    }
+  },
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2023-10-19T06:08:52.381Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
